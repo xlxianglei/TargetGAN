@@ -12,7 +12,7 @@ import numpy as np
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--work", required=True, type=str,   
-                    help= "wgan-gp, Generate, targetgan")
+                    help= "wgan-gp, generate, targetgan")
     parser.add_argument('--seed', type=int, default=2025, help='Random seed')
     parser.add_argument('--batch_size', type=int, default=64, help='Batch size')
     parser.add_argument('--latent_dim', type=int, default=100, help='Size of latent space')
