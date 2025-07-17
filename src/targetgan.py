@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import argparse
-from utils import *
+from src.utils import *
 import tensorflow as tf
 
 class TargetGAN():
@@ -17,7 +17,7 @@ class TargetGAN():
         self.g = tf.keras.models.load_model(args.generator)
         self.p = tf.keras.models.load_model(args.predictor)
         self.optimizer = Lion(learning_rate=args.step_size)
-        self.log_dir = args.log_dir
+        self.log_dir = args.targetgan_log_dir
     
     def opti_p(self, x, target):
         with tf.GradientTape() as t:
