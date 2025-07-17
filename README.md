@@ -23,7 +23,7 @@ python main.py --work wgan-gp --wgan_gp_log_dir {WGAN_GP_path}
 python main.py --work generate --generated_seqs_save_path {Generated_promoters_path}
 ```
 
-## 4. Training targetgan ⚡
+## 4. Training TargetGAN ⚡
 ```bash
 python main.py --work targetgan --targetgan_log_dir {TargetGAN_path}
 ```
