@@ -9,7 +9,7 @@ class TargetGAN():
     def __init__(self,args):
         super(TargetGAN, self).__init__()
         self.seed = args.seed
-        self.batch_size = args.batch_size
+        self.batch_size = args.targetgan_batch_size
         self.latent_dim = args.latent_dim
         self.target = args.target
         self.step_size = args.step_size
