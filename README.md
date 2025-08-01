@@ -27,5 +27,6 @@ python main.py --work generate --generated_seqs_save_path {Generated_promoters_p
 ```bash
 python main.py --work targetgan --targetgan_log_dir {TargetGAN_path}
 ```
+If you wish to use our synthetic promoters in your research, we provide here 20,480 synthetic promoters targeting max, as well as 10,240 synthetic promoters for each of the remaining nine targets. Their paths are located under target_promoters.
 
 Feel free to contact us if you have any questions or suggestions regarding the code and models.
