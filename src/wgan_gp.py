@@ -134,11 +134,11 @@ class WGAN_GP():
         print("Loading seqs data!")
         print("================================================")  
         data = pd.read_excel(self.data_loc)
-        train_data = data[data.dataset == 'training set'].sequence.values[:200]
+        train_data = data[data.dataset == 'training set'].sequence.values
         train_data = [one_hot_encode(i) for i in train_data]
-        valid_data = data[data.dataset == 'validation set'].sequence.values[:200]
+        valid_data = data[data.dataset == 'validation set'].sequence.values
         valid_data = [one_hot_encode(i) for i in valid_data]
-        train_label = data[data.dataset == 'training set'].enrichment.values[:200]
+        train_label = data[data.dataset == 'training set'].enrichment.values
         valid_seqs = feed(valid_data, self.batch_size, reuse=False)
         train_seqs = balanced_batch(train_data, train_label, self.batch_size)
         print("Training GAN!")
