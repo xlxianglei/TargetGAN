@@ -37,7 +37,7 @@ python main.py --work wgan-gp \
 
 **Performance Reference:**
 * **Hardware**: 2x NVIDIA GeForce RTX 3090
-* **Training Time**: Approximately 11 hours
+* **Training Time**: Approximately 11 hours for 100000 iterations
 
 ## 3. Generate Promoters with WGAN-GP ✏️
 
