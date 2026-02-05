@@ -129,26 +129,33 @@ def one_hot_encode(sequence: str,
     hash_table[to_uint8(neutral_alphabet)] = neutral_value
     return hash_table[to_uint8(sequence)]
 
-def save_samples(logdir: str, samples: np.ndarray, iteration: int):
+def save_samples(logdir: str, samples: np.ndarray, iteration: Any, filename: Optional[str] = None):
     """Save generated DNA sequences to file.
     
     Args:
         logdir: Output directory
         samples: Generated sequences (one-hot encoded)
-        iteration: Training iteration number for filename
+        iteration: Training iteration number for filename (ignored if filename is provided)
+        filename: Custom filename for the output file
     """
     # Convert one-hot to sequence strings
     argmax = np.argmax(samples, 2)
-    samples_dir = os.path.join(logdir, "samples")
-    check_folder(samples_dir)
     
-    with open(os.path.join(samples_dir, f"samples_{iteration}"), "w") as f:
+    if filename:
+        check_folder(logdir)
+        target_file = os.path.join(logdir, filename)
+    else:
+        samples_dir = os.path.join(logdir, "samples")
+        check_folder(samples_dir)
+        target_file = os.path.join(samples_dir, f"samples_{iteration}")
+
+    with open(target_file, "w") as f:
         for line in argmax:
             s = "".join(rev_charmap[d] for d in line) + "\n"
             f.write(s)
 
-def plot(y: List[float], 
-         x: List[float], 
+def plot(x: List[float], 
+         y: List[float], 
          logdir: str, 
          name: str,
          xlabel: Optional[str] = None, 
@@ -157,8 +164,8 @@ def plot(y: List[float],
     """Save training curve plot to file.
     
     Args:
-        y: Y-axis values
         x: X-axis values
+        y: Y-axis values
         logdir: Output directory
         name: Filename prefix
         xlabel: Optional X-axis label

@@ -1,10 +1,12 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 import pandas as pd
 import functools
 import argparse
 from src.utils import *
 import time
 import tensorflow as tf
+tf.get_logger().setLevel('ERROR')
 import tensorflow.keras as keras
 from tensorflow.keras import layers
 import math
@@ -13,8 +15,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--work", required=True, type=str,   
                     help= "wgan-gp, generate, targetgan")
-    parser.add_argument('--seed', type=int, default=2025, help='Random seed')
-    parser.add_argument('--batch_size', type=int, default=64, help='Batch size')
+    parser.add_argument('--seed', type=int, default=48, help='Random seed')
+    parser.add_argument('--batch_size', type=int, default=128, help='Batch size')
     parser.add_argument('--latent_dim', type=int, default=100, help='Size of latent space')
     parser.add_argument('--gen_dim', type=int, default=200, help='Generator dimension parameter')
     parser.add_argument('--disc_dim', type=int, default=200, help='Discriminator dimension parameter')
@@ -29,10 +31,10 @@ if __name__ == "__main__":
     parser.add_argument('--data_loc', type=str, default='./data/Natural promoters.xlsx', help='Data location')
     parser.add_argument('--wgan_gp_log_dir', type=str, default='./wgan-gp',help='Base log folder')
 
-    parser.add_argument('--generate_batch_size', type=int, default=9, help='Generate batch size')
+    parser.add_argument('--generate_batch_size', type=int, default=10, help='Generate batch size')
     parser.add_argument('--generate_num_seqs', type=int, default=76851, help='Number of sequences generated at once')
     parser.add_argument('--generated_seqs_save_path', type=str, default='./', help='Generate sequence save path')
-    parser.add_argument('--generator', type=str, default="./wgan-gp/z_dim_100_gen_dim_200_disc_dim_200/checkpoints/checkpoint_54000/generator.h5",\
+    parser.add_argument('--generator', type=str, default="./data/generator.h5",\
                                                                          help='The final WGAN-GP model save path')
     
     parser.add_argument('--targetgan_batch_size', type=int, default=2048, help='Targetgan batch size')
@@ -49,7 +51,6 @@ if __name__ == "__main__":
         np.random.seed(args.seed)  # set random seed for numpy
         tf.random.set_seed(args.seed) # set random seed for tensorflow-cpu
     os.environ["CUDA_VISIBLE_DEVICES"]=args.device
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
     if args.work == "wgan-gp":
         from src.wgan_gp import *
         """checking arguments"""
@@ -60,19 +61,35 @@ if __name__ == "__main__":
         model.train()
 
     elif args.work == "generate":
+        import re
         generator = tf.keras.models.load_model(args.generator)
         nSampleBatches = math.ceil(args.generate_num_seqs / args.generate_batch_size)
-        fixed_latents = []
-        for nBaches in range(nSampleBatches):
-            fixed_latents.append(np.random.normal(size=[args.generate_batch_size, 100]))
+        
+        print(f"Start generating {args.generate_num_seqs} sequences using {args.generate_batch_size} per batch...")
         samples = []
-        for nBaches in range(nSampleBatches):  
-            samples.append(generator(fixed_latents[nBaches]))
+        for nBaches in range(nSampleBatches):
+            if (nBaches + 1) % 100 == 0:
+                print(f"Generating batch {nBaches + 1}/{nSampleBatches}")
+            
+            # Generate latents on the fly
+            latent = np.random.normal(size=[args.generate_batch_size, 100])
+            samples.append(generator(latent, training=False))
+            
         samples = np.concatenate(samples, axis=0)
         if len(samples) > args.generate_num_seqs:
             samples = samples[:args.generate_num_seqs]
-        save_samples(args.generated_seqs_save_path,samples,54000)
-        print("%s sequences have been generated "%(samples.shape[0]))
+            
+        # Extract iteration from checkpoint path for better filename
+        # e.g. .../checkpoint_54000/generator.h5 -> 54000
+        match = re.search(r'checkpoint_(\d+)', args.generator)
+        iter_id = match.group(1) if match else "final"
+        quantity = samples.shape[0]
+        
+        # Save samples with dynamic name
+        # Result file: args.generated_seqs_save_path/samples/WGAN-GP-{iter_id}-{quantity}.txt
+        filename = f"WGAN-GP-{iter_id}-{quantity}.txt"
+        save_samples(args.generated_seqs_save_path, samples, iteration=None, filename=filename)
+        print(f"{quantity} sequences have been generated.")
         
     elif args.work == "targetgan":
         from src.targetgan import *

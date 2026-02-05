@@ -62,8 +62,14 @@ def discriminator_model(res_layers=5, num_channels=100):
 
 class WGAN_GP():
     def __init__(self,args):
+        self.strategy = tf.distribute.MirroredStrategy()
+        print('Number of devices: {}'.format(self.strategy.num_replicas_in_sync))
+        
         self.seed = args.seed
         self.batch_size = args.batch_size
+        self.global_batch_size = self.batch_size
+        self.per_replica_batch_size = self.batch_size // self.strategy.num_replicas_in_sync
+        
         self.latent_dim = args.latent_dim
         self.gen_dim = args.gen_dim
         self.disc_dim = args.disc_dim
@@ -77,10 +83,12 @@ class WGAN_GP():
         self.disc_iters = args.disc_iters
         self.data_loc = args.data_loc
         self.log_dir = args.wgan_gp_log_dir
-        self.g = generator_model(latent_dim=self.latent_dim, num_channels=self.gen_dim,res_layers=self.gen_layers)
-        self.d = discriminator_model(res_layers=self.disc_layers, num_channels=self.disc_dim)
-        self.g_optimizer = Lion(learning_rate=self.learning_rate)
-        self.d_optimizer = Lion(learning_rate=self.learning_rate)
+        
+        with self.strategy.scope():
+            self.g = generator_model(latent_dim=self.latent_dim, num_channels=self.gen_dim,res_layers=self.gen_layers)
+            self.d = discriminator_model(res_layers=self.disc_layers, num_channels=self.disc_dim)
+            self.g_optimizer = Lion(learning_rate=self.learning_rate)
+            self.d_optimizer = Lion(learning_rate=self.learning_rate)
 
     def gradient_penalty(self, f, real, fake):
         shape = [tf.shape(real)[0]] + [1] * (real.shape.ndims - 1)
@@ -94,10 +102,9 @@ class WGAN_GP():
         gp = tf.reduce_mean((norm - 1.)**2)
         return gp
 
-    @tf.function
-    def train_G(self):
+    def train_step_G(self):
         with tf.GradientTape() as t:
-            z = tf.random.normal(shape=(self.batch_size, self.latent_dim))
+            z = tf.random.normal(shape=(self.per_replica_batch_size, self.latent_dim))
             x_fake = self.g(z, training=True)
             gen_score = self.d(x_fake, training=True)
             mean_gen_score = tf.reduce_mean(gen_score)
@@ -107,9 +114,14 @@ class WGAN_GP():
         return G_loss, mean_gen_score
 
     @tf.function
-    def train_D(self, x_real):
+    def train_G(self):
+        per_replica_losses, per_replica_scores = self.strategy.run(self.train_step_G)
+        return self.strategy.reduce(tf.distribute.ReduceOp.MEAN, per_replica_losses, axis=None), \
+               self.strategy.reduce(tf.distribute.ReduceOp.MEAN, per_replica_scores, axis=None)
+
+    def train_step_D(self, x_real):
         with tf.GradientTape() as t:
-            z = tf.random.normal(shape=(self.batch_size, self.latent_dim))
+            z = tf.random.normal(shape=(self.per_replica_batch_size, self.latent_dim))
             x_fake = self.g(z, training=True)
             x_real_d_logit = self.d(x_real, training=True)
             x_fake_d_logit = self.d(x_fake, training=True)
@@ -120,6 +132,12 @@ class WGAN_GP():
         D_grad = t.gradient(D_loss, self.d.trainable_variables)
         self.d_optimizer.apply_gradients(zip(D_grad, self.d.trainable_variables))
         return D_loss, mean_real_score
+
+    @tf.function
+    def train_D(self, x_real):
+        per_replica_losses, per_replica_scores = self.strategy.run(self.train_step_D, args=(x_real,))
+        return self.strategy.reduce(tf.distribute.ReduceOp.MEAN, per_replica_losses, axis=None), \
+               self.strategy.reduce(tf.distribute.ReduceOp.MEAN, per_replica_scores, axis=None)
 
     @tf.function
     def sample(self, z):
@@ -139,14 +157,25 @@ class WGAN_GP():
         valid_data = data[data.dataset == 'validation set'].sequence.values
         valid_data = [one_hot_encode(i) for i in valid_data]
         train_label = data[data.dataset == 'training set'].enrichment.values
-        valid_seqs = feed(valid_data, self.batch_size, reuse=False)
-        train_seqs = balanced_batch(train_data, train_label, self.batch_size)
+        valid_seqs = feed(valid_data, self.global_batch_size, reuse=False)
+        
+        # Create distributed dataset for training
+        def train_gen():
+            return balanced_batch(train_data, train_label, self.global_batch_size)
+            
+        train_dataset = tf.data.Dataset.from_generator(
+            train_gen,
+            output_signature=tf.TensorSpec(shape=(self.global_batch_size, 170, 4), dtype=tf.float32)
+        )
+        dist_train_dataset = self.strategy.experimental_distribute_dataset(train_dataset)
+        train_iterator = iter(dist_train_dataset)
+
         print("Training GAN!")
         print("================================================")
         fixed_latents = []
         nSampleBatches = 10
         for nBaches in range (nSampleBatches):
-            fixed_latents.append(np.random.normal(size=[self.batch_size, self.latent_dim]))
+            fixed_latents.append(np.random.normal(size=[self.global_batch_size, self.latent_dim]))
         train_cost = []
         gen_costs = []
         gen_scores = []
@@ -168,7 +197,7 @@ class WGAN_GP():
 
             # train discriminator "to optimality"
             for d in range(self.disc_iters):
-                data = next(train_seqs)
+                data = next(train_iterator)
                 cost, mean_real_score_itr = self.train_D(data)
             train_cost.append(cost)
             real_scores.append(mean_real_score_itr)
@@ -178,7 +207,7 @@ class WGAN_GP():
                 cost_vals = []
                 data = next(valid_seqs)
                 while data is not None:
-                    z = tf.random.normal(shape=(self.batch_size, self.latent_dim), seed=self.seed)
+                    z = tf.random.normal(shape=(self.global_batch_size, self.latent_dim), seed=self.seed)
                     x_fake = self.g(z, training=False)
                     x_real_d_logit = self.d(data, training=False)
                     x_fake_d_logit = self.d(x_fake, training=False)
@@ -250,7 +279,7 @@ if __name__ == '__main__':
     parser.add_argument('--disc_iters', type=int, default=5, help='Number of iterations to train discriminator for at each training step')
     parser.add_argument('--data_loc', type=str, default='../data/Natural promoters.xlsx', help='Data location')
     parser.add_argument('--log_dir', type=str, default='../wgan-gp',help='Base log folder')
-    parser.add_argument('--device', type=str, default='0', help='Which GPU to use, 0 or 1.')
+    parser.add_argument('--device', type=str, default='0', help='Which GPU to use, 0, 1 or "0,1"')
     args = parser.parse_args()
 
     """checking arguments"""

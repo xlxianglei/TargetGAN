@@ -1,7 +1,8 @@
 name: targetgan
 channels:
-  - conda-forge
   - defaults
+  - bioconda
+  - conda-forge
 dependencies:
   - _libgcc_mutex=0.1=main
   - _openmp_mutex=5.1=1_gnu
@@ -10,22 +11,22 @@ dependencies:
   - argon2-cffi-bindings=21.2.0=py38h7f8727e_0
   - asttokens=2.0.5=pyhd3eb1b0_0
   - attrs=24.2.0=py38h06a4308_0
-  - backcall=0.2.0=pyhd3eb1b0_0
+  - backcall=0.2.0=pyhd3eb1b0_1
   - beautifulsoup4=4.12.3=py38h06a4308_0
   - bleach=4.1.0=pyhd3eb1b0_0
-  - ca-certificates=2025.2.25=h06a4308_0
+  - bowtie2=2.5.4=he96a11b_7
+  - ca-certificates=2026.1.4=hbd8a1cb_0
   - cffi=1.17.1=py38h1fdaa30_0
   - comm=0.2.1=py38h06a4308_0
-  - cudatoolkit=11.2.2=hbe64b41_10
-  - cudnn=8.1.0.77=h90431f1_0
+  - cuda-version=11.0=h6b8d8af_3
+  - cudatoolkit=11.0.3=h7761cd4_13
+  - cudnn=8.2.1.32=h86fa8c9_0
   - debugpy=1.6.7=py38h6a678d5_0
   - decorator=5.1.1=pyhd3eb1b0_0
   - defusedxml=0.7.1=pyhd3eb1b0_0
   - entrypoints=0.4=py38h06a4308_0
   - exceptiongroup=1.2.0=py38h06a4308_0
   - executing=0.8.3=pyhd3eb1b0_0
-  - idna=3.7=py38h06a4308_0
-  - importlib-metadata=7.0.1=py38h06a4308_0
   - importlib_resources=6.4.0=py38h06a4308_0
   - ipykernel=6.29.5=py38h06a4308_0
   - ipython=8.12.2=py38h06a4308_0
@@ -40,14 +41,17 @@ dependencies:
   - jupyter_server=2.14.1=py38h06a4308_0
   - jupyter_server_terminals=0.4.4=py38h06a4308_1
   - jupyterlab_pygments=0.2.2=py38h06a4308_0
-  - ld_impl_linux-64=2.40=h12ee557_0
+  - ld_impl_linux-64=2.44=h153f514_2
   - libffi=3.4.4=h6a678d5_1
-  - libgcc-ng=11.2.0=h1234567_1
-  - libgomp=11.2.0=h1234567_1
-  - libsodium=1.0.18=h7b6447c_0
-  - libstdcxx-ng=11.2.0=h1234567_1
+  - libgcc=15.2.0=h69a1729_7
+  - libgcc-ng=15.2.0=h166f726_7
+  - libgomp=15.2.0=h4751f2c_7
+  - libsodium=1.0.20=heac8642_0
+  - libstdcxx=15.2.0=h39759b7_7
+  - libstdcxx-ng=15.2.0=hc03a8fd_7
   - libxcb=1.17.0=h9b100fa_0
-  - markupsafe=2.1.3=py38h5eee18b_0
+  - libzlib=1.3.1=hb25bd0a_0
+  - lz4-c=1.9.4=h6a678d5_1
   - matplotlib-inline=0.1.6=py38h06a4308_0
   - mistune=2.0.4=py38h06a4308_0
   - nb_conda=2.2.1=py38h06a4308_1
@@ -56,15 +60,15 @@ dependencies:
   - nbclient=0.8.0=py38h06a4308_0
   - nbconvert=7.16.4=py38h06a4308_0
   - nbformat=5.10.4=py38h06a4308_0
-  - ncurses=6.4=h6a678d5_0
+  - ncurses=6.5=h7934f7d_0
   - nest-asyncio=1.6.0=py38h06a4308_0
   - notebook=6.5.7=py38h06a4308_0
   - notebook-shim=0.2.3=py38h06a4308_0
-  - openssl=3.0.16=h5eee18b_0
+  - openssl=3.6.1=h35e630c_1
   - overrides=7.4.0=py38h06a4308_0
-  - packaging=24.1=py38h06a4308_0
   - pandocfilters=1.5.0=pyhd3eb1b0_0
   - parso=0.8.3=pyhd3eb1b0_0
+  - perl=5.42.0=0_h47b2149_perl5
   - pexpect=4.8.0=pyhd3eb1b0_3
   - pickleshare=0.7.5=pyhd3eb1b0_1003
   - pip=24.2=py38h06a4308_0
@@ -74,9 +78,8 @@ dependencies:
   - prompt-toolkit=3.0.43=py38h06a4308_0
   - psutil=5.9.0=py38h5eee18b_0
   - pthread-stubs=0.3=h0ce48e5_1
-  - ptyprocess=0.7.0=pyhd3eb1b0_2
+  - ptyprocess=0.7.0=pyhd3eb1b0_3
   - pure_eval=0.2.2=pyhd3eb1b0_0
-  - pycparser=2.21=pyhd3eb1b0_0
   - pygments=2.15.1=py38h06a4308_1
   - python=3.8.20=he870216_0
   - python-dateutil=2.9.0post0=py38h06a4308_2
@@ -84,21 +87,20 @@ dependencies:
   - python-json-logger=2.0.7=py38h06a4308_0
   - pyyaml=6.0.2=py38h5eee18b_0
   - pyzmq=24.0.1=py38h5eee18b_0
-  - readline=8.2=h5eee18b_0
+  - readline=8.3=hc2a1206_0
   - referencing=0.30.2=py38h06a4308_0
   - rfc3339-validator=0.1.4=py38h06a4308_0
   - rfc3986-validator=0.1.1=py38h06a4308_0
   - rpds-py=0.10.6=py38hb02cf49_0
   - send2trash=1.8.2=py38h06a4308_0
   - setuptools=75.1.0=py38h06a4308_0
-  - six=1.16.0=pyhd3eb1b0_1
   - sniffio=1.3.0=py38h06a4308_0
   - soupsieve=2.5=py38h06a4308_0
-  - sqlite=3.45.3=h5eee18b_0
+  - sqlite=3.51.1=he0a8d7e_0
   - stack_data=0.2.0=pyhd3eb1b0_0
   - terminado=0.17.1=py38h06a4308_0
   - tinycss2=1.2.1=py38h06a4308_0
-  - tk=8.6.14=h993c535_1
+  - tk=8.6.15=h54e0aa7_0
   - tornado=6.4.1=py38h5eee18b_0
   - traitlets=5.14.3=py38h06a4308_0
   - typing_extensions=4.11.0=py38h06a4308_0
@@ -112,22 +114,94 @@ dependencies:
   - xorg-xorgproto=2024.1=h5eee18b_1
   - xz=5.6.4=h5eee18b_1
   - yaml=0.2.5=h7b6447c_0
-  - zeromq=4.3.5=h6a678d5_0
+  - zeromq=4.3.5=hb0a5e54_1
   - zipp=3.20.2=py38h06a4308_0
-  - zlib=1.2.13=h5eee18b_1
+  - zlib=1.3.1=hb25bd0a_0
+  - zstd=1.5.7=h11fc155_0
   - pip:
-    - absl-py==0.15.0
-    - flatbuffers==1.12
-    - google-auth==2.40.3
-    - google-auth-oauthlib==0.4.6
-    - grpcio==1.34.1
-    - h5py==3.1.0
-    - numpy==1.19.5
-    - protobuf==3.20.3
-    - requests==2.32.4
-    - tensorboard==2.11.2
-    - tensorboard-data-server==0.6.1
-    - tensorflow-estimator==2.5.0
-    - tensorflow-gpu==2.5.0
-    - typing-extensions==3.7.4.3
-prefix: /home/xlxiang/anaconda3/envs/targetgan
+      - absl-py==0.15.0
+      - arrow==1.4.0
+      - astunparse==1.6.3
+      - async-lru==2.0.4
+      - babel==2.17.0
+      - backports-zoneinfo==0.2.1
+      - bio==1.6.2
+      - biopython==1.83
+      - biothings-client==0.4.1
+      - certifi==2026.1.4
+      - charset-normalizer==3.4.4
+      - contourpy==1.1.1
+      - cryptography==45.0.7
+      - cycler==0.12.1
+      - dmslogo==0.6.3
+      - et-xmlfile==2.0.0
+      - flatbuffers==1.12
+      - fonttools==4.57.0
+      - fqdn==1.5.1
+      - gast==0.4.0
+      - google-auth==2.48.0
+      - google-auth-oauthlib==0.4.6
+      - google-pasta==0.2.0
+      - gprofiler-official==1.0.0
+      - grpcio==1.34.1
+      - h11==0.16.0
+      - h5py==3.1.0
+      - httpcore==1.0.9
+      - httpx==0.28.1
+      - idna==3.11
+      - importlib-metadata==8.5.0
+      - importlib-resources==6.4.5
+      - isoduration==20.11.0
+      - joblib==1.4.2
+      - json5==0.13.0
+      - jsonpointer==3.0.0
+      - jupyter-lsp==2.3.0
+      - jupyterlab==4.3.8
+      - jupyterlab-lsp==5.2.0
+      - jupyterlab-server==2.28.0
+      - keras-nightly==2.5.0.dev2021032900
+      - keras-preprocessing==1.1.2
+      - kiwisolver==1.4.7
+      - markdown==3.7
+      - markupsafe==2.1.5
+      - matplotlib==3.5.3
+      - mygene==3.2.2
+      - numpy==1.19.5
+      - oauthlib==3.3.1
+      - openpyxl==3.0.10
+      - opt-einsum==3.3.0
+      - packaging==26.0
+      - palettable==3.3.3
+      - pandas==1.3.5
+      - pillow==9.5.0
+      - pooch==1.8.2
+      - protobuf==3.20.3
+      - pyasn1==0.6.2
+      - pyasn1-modules==0.4.2
+      - pycparser==2.23
+      - pyparsing==3.1.4
+      - pytz==2025.2
+      - requests==2.32.4
+      - requests-oauthlib==2.0.0
+      - rsa==4.9.1
+      - scikit-learn==1.0.2
+      - scipy==1.7.3
+      - seaborn==0.11.2
+      - six==1.15.0
+      - tensorboard==2.11.2
+      - tensorboard-data-server==0.6.1
+      - tensorboard-plugin-wit==1.8.1
+      - tensorflow-estimator==2.5.0
+      - tensorflow-gpu==2.5.0
+      - termcolor==1.1.0
+      - threadpoolctl==3.5.0
+      - tomli==2.4.0
+      - tqdm==4.67.3
+      - typing-extensions==4.13.2
+      - tzdata==2025.3
+      - uri-template==1.3.0
+      - urllib3==2.2.3
+      - webcolors==24.8.0
+      - werkzeug==3.0.6
+      - wrapt==1.12.1
+prefix: /home/xlxiang/miniconda3/envs/targetgan
