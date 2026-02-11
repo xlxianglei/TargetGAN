@@ -162,6 +162,7 @@ dependencies:
       - keras-nightly==2.5.0.dev2021032900
       - keras-preprocessing==1.1.2
       - kiwisolver==1.4.7
+      - levenshtein==0.25.1
       - markdown==3.7
       - markupsafe==2.1.5
       - matplotlib==3.5.3
@@ -181,6 +182,7 @@ dependencies:
       - pycparser==2.23
       - pyparsing==3.1.4
       - pytz==2025.2
+      - rapidfuzz==3.9.7
       - requests==2.32.4
       - requests-oauthlib==2.0.0
       - rsa==4.9.1
