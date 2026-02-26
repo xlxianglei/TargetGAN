@@ -37,7 +37,7 @@ python main.py --work wgan-gp \
 
 **Performance Reference:**
 * **Hardware**: 2x NVIDIA GeForce RTX 3090
-* **Training Time**: Approximately 11 hours
+* **Training Time**: Approximately 11 hours for 100000 iterations
 
 ## 3. Generate Promoters with WGAN-GP ✏️
 
@@ -45,7 +45,7 @@ Use the trained WGAN-GP generator to produce new synthetic promoter sequences wi
 
 ```bash
 python main.py --work generate \
-    --generator "./data/generator.h5" \
+    --generator "./wgan-gp/z_dim_100_gen_dim_200_disc_dim_200/checkpoints/checkpoint_54000/generator.h5" \
     --generated_seqs_save_path "./samples/" \
     --generate_num_seqs 5000
 ```
@@ -92,7 +92,7 @@ You can find them in the [`notebooks`](./notebooks) directory:
 | :--- | :--- |
 | [Paper_Figure2_WGAN_GP.ipynb](./notebooks/Paper_Figure2_WGAN_GP.ipynb) | Analysis and plotting for WGAN-GP performance (Figure 2). |
 | [Paper_Figure3_TargetGAN.ipynb](./notebooks/Paper_Figure3_TargetGAN.ipynb) | Results and visualizations for TargetGAN optimization (Figure 3). |
-| [Paper_Figure4_STARR_seq.ipynb](./notebooks/Paper_Figure4_STARR_seq.ipynb) | Processing and analysis of STARR-seq data (Figure 4). |
+| [Paper_Figure4_STARR_seq_LUC.ipynb](./notebooks/Paper_Figure4_STARR_seq_LUC.ipynb) | Processing and analysis of STARR-seq and Luciferase data (Figure 4). |
 | [Paper_Figure5_motif_analysis.ipynb](./notebooks/Paper_Figure5_motif_analysis.ipynb) | Exploration and visualization of motif enrichment (Figure 5). |
 | [Paper_Figure6_LR.ipynb](./notebooks/Paper_Figure6_LR.ipynb) | Logistic Regression analysis and related plots (Figure 6). |
 
