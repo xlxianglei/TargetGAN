@@ -23,7 +23,7 @@ Train the WGAN-GP model to learn the distribution of natural promoter sequences.
 ```bash
 python main.py --work wgan-gp \
     --wgan_gp_log_dir ./wgan-gp-test \
-    --data_loc "./data/Natural promoters.xlsx" \
+    --data_loc "./data/Natural_promoters.xlsx" \
     --device "0,1"
 ```
 

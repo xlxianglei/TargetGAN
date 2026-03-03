@@ -28,7 +28,7 @@ if __name__ == "__main__":
     parser.add_argument('--max_seq_len', type=int, default=170, help="Maximum sequence length of data")
     parser.add_argument('--checkpoint_iters', type=int, default=100, help='Number of iterations before saving checkpoint')
     parser.add_argument('--disc_iters', type=int, default=5, help='Number of iterations to train discriminator for at each training step')
-    parser.add_argument('--data_loc', type=str, default='./data/Natural promoters.xlsx', help='Data location')
+    parser.add_argument('--data_loc', type=str, default='./data/Natural_promoters.xlsx', help='Data location')
     parser.add_argument('--wgan_gp_log_dir', type=str, default='./wgan-gp',help='Base log folder')
 
     parser.add_argument('--generate_batch_size', type=int, default=10, help='Generate batch size')
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     if args.work == "wgan-gp":
         from src.wgan_gp import *
         """checking arguments"""
-        check_folder(args.data_loc)
+        check_folder(os.path.dirname(args.data_loc))
         check_folder(args.wgan_gp_log_dir)
 
         model = WGAN_GP(args)

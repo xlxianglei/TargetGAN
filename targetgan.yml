@@ -103,7 +103,7 @@ dependencies:
   - tk=8.6.15=h54e0aa7_0
   - tornado=6.4.1=py38h5eee18b_0
   - traitlets=5.14.3=py38h06a4308_0
-  - typing_extensions=4.11.0=py38h06a4308_0
+  - typing_extensions
   - wcwidth=0.2.5=pyhd3eb1b0_0
   - webencodings=0.5.1=py38_1
   - websocket-client=1.8.0=py38h06a4308_0
@@ -123,7 +123,7 @@ dependencies:
       - adjusttext==1.3.0
       - arrow==1.4.0
       - astunparse==1.6.3
-      - async-lru==2.0.4
+      - async-lru
       - babel==2.17.0
       - backports-zoneinfo==0.2.1
       - bio==1.6.2
@@ -200,7 +200,7 @@ dependencies:
       - threadpoolctl==3.5.0
       - tomli==2.4.0
       - tqdm==4.67.3
-      - typing-extensions==4.13.2
+      - typing-extensions
       - tzdata==2025.3
       - uri-template==1.3.0
       - urllib3==2.2.3
