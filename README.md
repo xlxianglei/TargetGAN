@@ -7,6 +7,13 @@
   <img src="images/model_architecture.jpg" alt="Model architecture of TargetGAN">
 </p>
 
+## Data Download 💾
+
+Datasets, model weights, and logs required to reproduce the paper's results are hosted on Figshare:
+[![DOI](https://img.shields.io/badge/DOI-10.6084/m9.figshare.31482604-blue)](https://doi.org/10.6084/m9.figshare.31482604)
+
+Please download the ZIP files (`wgan-gp.zip`, `targetgan-logs.zip`, `data_for_plot.zip`) from our Figshare repository and extract them into their respective directories in this project.
+
 ## 1. Install 🚀
 
 ```bash
