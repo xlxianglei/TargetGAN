@@ -52,7 +52,7 @@ Use the trained WGAN-GP generator to produce new synthetic promoter sequences wi
 
 ```bash
 python main.py --work generate \
-    --generator "./wgan-gp/z_dim_100_gen_dim_200_disc_dim_200/checkpoints/checkpoint_54000/generator.h5" \
+    --generator "./data/generator.h5" \
     --generated_seqs_save_path "./samples/" \
     --generate_num_seqs 5000
 ```
