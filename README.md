@@ -20,7 +20,7 @@ Please download the ZIP files (`wgan-gp.zip`, `targetgan-logs.zip`, `data_for_pl
 git clone https://github.com/xlxianglei/TargetGAN.git
 cd TargetGAN
 conda env create -f targetgan.yml
-conda activate targetGAN
+conda activate targetgan
 ```
 
 ## 2. Training WGAN-GP ✒️
