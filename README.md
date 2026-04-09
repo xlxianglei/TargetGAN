@@ -146,3 +146,18 @@ If you wish to use our synthetic promoters in your research, we provide here 20,
 ## Contact 📧
 
 Feel free to contact us if you have any questions or suggestions regarding the code and models.
+
+## Citation 📖
+
+If you use TargetGAN or the generated synthetic promoters in your research, please cite our paper:
+
+**Xiang, X., Yao, Q., Deng, K., Ge, Y., Xiong, Q., Lu, Y., & Hu, X. (2026). TargetGAN: A generative AI framework for designing plant core promoters with targeted activity. *Plant Communications*, (Provisionally Accepted).**
+
+```bibtex
+@article{xiang2026targetgan,
+  title={TargetGAN: A generative AI framework for designing plant core promoters with targeted activity},
+  author={Xiang, Xianglei and Yao, Qi and Deng, Kaixuan and Ge, Yuanxin and Xiong, Qi and Lu, Yuming and Hu, Xuehai},
+  journal={Plant Communications},
+  year={2026},
+  note={Provisionally Accepted}
+}
