@@ -151,7 +151,7 @@ Feel free to contact us if you have any questions or suggestions regarding the c
 
 If you use TargetGAN or the generated synthetic promoters in your research, please cite our paper:
 
-**Xiang, X., Yao, Q., Deng, K., Ge, Y., Xiong, Q., Lu, Y., & Hu, X. (2026). TargetGAN: A generative AI framework for designing plant core promoters with targeted activity. *Plant Communications*, (Provisionally Accepted).**
+**Xiang, X., Yao, Q., Deng, K., Ge, Y., Xiong, Q., Lu, Y., & Hu, X. (2026). TargetGAN: A generative AI framework for designing plant core promoters with targeted activity. *Plant Communications*, 101851. https://doi.org/10.1016/j.xplc.2026.101851**
 
 ```bibtex
 @article{xiang2026targetgan,
@@ -159,5 +159,7 @@ If you use TargetGAN or the generated synthetic promoters in your research, plea
   author={Xiang, Xianglei and Yao, Qi and Deng, Kaixuan and Ge, Yuanxin and Xiong, Qi and Lu, Yuming and Hu, Xuehai},
   journal={Plant Communications},
   year={2026},
-  note={Provisionally Accepted}
+  article={101851},
+  doi={10.1016/j.xplc.2026.101851},
+  url={[https://doi.org/10.1016/j.xplc.2026.101851](https://doi.org/10.1016/j.xplc.2026.101851)}
 }
